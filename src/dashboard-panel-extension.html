@@ -1,0 +1,174 @@
+﻿<script type="text/html" id="dx-dashboard-working-mode-extension">
+    <style>
+        .dx-dashboard-panel-extension {
+            background-color: white;
+            z-index: 2;
+        }
+        .dx-dashboard-panel-extension h1 {
+            position:absolute;
+            width: 100%;
+            height:50px;
+            line-height: 50px;
+            padding-left:20px;
+            margin:0px;
+            border-bottom: solid 1px #E5E5E5;
+
+            color: black;
+            font-size:12px;
+            font-weight:700;
+            text-transform:uppercase;
+        }
+        .dx-dashboard-panel-extension .dx-dashboard-edit-in-designer-button {
+            position: absolute;
+            width: 100%;
+            height: 110px;
+            bottom: 0px;
+
+            color: white;
+            background-color: #579ADD;
+            text-align:center;
+            font-size: 12pt;
+
+            cursor: pointer;       
+        }
+        .dx-dashboard-panel-extension .dx-dashboard-edit-in-designer-button svg {
+            width:32px;
+            height:32px;
+        }
+        .dx-dashboard-panel-extension .dx-dashboard-edit-in-designer-button:before {
+            content: '';
+            display: inline-block;
+            vertical-align: middle;
+            height: 100%;
+            width: .1px;
+        }
+        .dx-dashboard-panel-extension .dx-dashboard-edit-in-designer-button>* {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .dx-dashboard-panel-extension .dx-dashboard-dashboard-list {
+            position:absolute;
+            top: 50px;
+            bottom:110px;
+            width: 100%;
+            height: initial;
+            margin:0;
+            padding:0;
+            color:#2D3034;
+        }   
+        .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item {
+            border: none;
+            border-bottom: solid 1px #E5E5E5;
+        }
+        .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item-content {
+            height: 39px;
+            line-height:39px;
+            padding: 0px 0px 0px 20px;
+            font-size:12px;
+            cursor: pointer;
+        }
+     
+        .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-state-hover, 
+        .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-state-focused {
+            background-color: #ECF4FF; 
+            color:#2D3034;
+        }
+        .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected,
+        .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected.dx-state-hover:not(.dx-state-focused),
+        .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected.dx-state-focused {
+            background-color: #DBE9FD;
+            color:#2D3034;
+        }
+        .dx-dashboard-toolbox-extension {
+            transition: left 500ms ease;
+        }
+        .dx-dashboard-toolbar .dx-dashboard-viewer-button {
+            width: 80px;
+            height: 50px;
+            line-height: 50px;
+            background-color: #579ADD;
+            color: white;
+            text-align: center;
+            font-size: 10pt;
+            letter-spacing: normal;
+            text-transform:uppercase;
+            cursor: pointer;   
+        }
+        .dx-color-scheme-dark .dx-dashboard-panel-extension {
+            background-color: #111111;
+        }
+        .dx-color-scheme-dark h1 {
+            color: #A9A9A9;
+            border-bottom: solid 1px rgba(255, 255, 255, 0.2);
+        }
+        .dx-color-scheme-dark .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-state-hover,
+        .dx-color-scheme-dark .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-state-focused {
+            color: #A9A9A9;
+            background-color: #004060;
+        }
+        .dx-color-scheme-dark .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected,
+        .dx-color-scheme-dark .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected.dx-state-hover:not(.dx-state-focused),
+        .dx-color-scheme-dark .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected.dx-state-focused {
+            color: #A9A9A9;
+            background-color: #306080;
+        }
+        .dx-color-scheme-dark .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item {
+            border-bottom: solid 1px rgba(255, 255, 255, 0.2);
+        }
+    </style>
+
+
+    <div class="dx-dashboard-toolbox-extension dx-dashboard-panel-extension dx-dashboard-typography" data-bind="style: { width: panelWidth + 'px', left: left() + 'px'  }">
+        <h1 data-bind="text: DevExpress.Designer.getLocalization('DashboardWebStringId.Dashboards')"></h1>
+        <div 
+             class="dx-dashboard-dashboard-list dx-dashboard-typography" 
+             data-bind="dxList: { 
+                        noDataText: '',
+                        dataSource: availableDashboards,
+                        keyExpr: 'id',
+                        selectionMode: 'single',
+                        itemTemplate: function(itemData) { return itemData.name;  },
+                        activeStateEnabled: false,
+                        selectedItemKeys: selectedItemKeys
+                        
+         }, style: { bottom: allowSwitchToDesigner() ? '' : 0 }">
+        </div>
+        <!-- ko if: allowSwitchToDesigner -->
+            <!-- ko template: 'dx-dashboard-working-mode-extension-designer-button' -->
+            <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</script>
+
+<script type="text/html" id="dx-dashboard-working-mode-extension-designer-button-icon">
+    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+         viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+        <style type="text/css">
+            .editDashboardIcon {
+                fill: #FFFFFF;
+            }
+        </style>
+        <g>
+        <path class="editDashboardIcon" d="M25.5,5.5C23.3,3.3,20.3,2,17,2C10.5,2,5.3,7.1,5,13.5C6,13.2,7,13,8,13c5,0,9,4,9,9c0,1.4-0.3,2.8-0.9,4
+		                                c0.3,0,0.6,0,0.9,0c6.6,0,12-5.4,12-12H17L25.5,5.5z" />
+        <path class="editDashboardIcon" d="M32,13c0-3.3-1.3-6.3-3.5-8.5L20,13H32z" />
+        <path class="editDashboardIcon" d="M8,14c-4.4,0-8,3.6-8,8s3.6,8,8,8s8-3.6,8-8S12.4,14,8,14z M13.7,24H9.3l1.7-5l-4.2,5H2.3
+		                                C2.1,23.4,2,22.7,2,22c0-3.3,2.7-6,6-6s6,2.7,6,6C14,22.7,13.9,23.4,13.7,24z" />
+        </g>
+    </svg>
+</script>
+
+<script type="text/html" id="dx-dashboard-working-mode-extension-designer-button">
+    <div class="dx-dashboard-edit-in-designer-button" data-bind="click: switchToDesigner">
+        <div style="display:inline-block">
+            <!-- ko template: 'dx-dashboard-working-mode-extension-designer-button-icon' -->
+            <!-- /ko -->
+            <br /><span data-bind="text: DevExpress.Designer.getLocalization('DashboardWebStringId.EditInDesigner')"></span>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="dx-dashboard-working-mode-extension-viewer-button">
+    <div class='dx-dashboard-viewer-button' data-bind="click: click, text: DevExpress.Designer.getLocalization('DashboardWebStringId.Viewer')"></div>
+</script>
