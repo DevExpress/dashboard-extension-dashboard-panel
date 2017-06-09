@@ -7,6 +7,7 @@
     "url": "git+https://github.com/DevExpress/dashboard-extension-dashboard-panel.git"
   },
   "author": "Developer Express Inc.",
+  "license": "MIT",
   "homepage": "https://github.com/DevExpress/dashboard-extension-dashboard-panel#readme",
    "devDependencies": {
     "gulp": "^3.9.0",
