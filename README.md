@@ -15,14 +15,13 @@ The **Dashboard Panel** extension displays a list of available dashboards and le
 ```xml
 <head>
     <!-- ... -->
-<link rel="stylesheet" type="text/css" href="/your-path/dashboard-extension-dashboard-panel/dist/dashboard-panel-style.css" />
+    <link rel="stylesheet" type="text/css" href="/your-path/dashboard-extension-dashboard-panel/dist/dashboard-panel-style.css" />
 </head>
 ```
 
 4. Add the ```/dashboard-extension-dashboard-panel/dist/dashboard-panel.html``` file content inside the ```<body>``` section onto the page containing Web Dashboard. 
 
 5. Handle the Web Dashboard's [BeforeRender](https://documentation.devexpress.com/#Dashboard/DevExpressDashboardWebScriptsASPxClientDashboard_BeforeRendertopic) event to perform client-side customization of the Web Dashboard control before the control and its elements have been rendered.
-
 ```xml
 <!-- For ASP.NET Web Forms -->
 <dx:ASPxDashboard ID="ASPxDashboard1" runat="server" DashboardStorageFolder="~/App_Data/Dashboards">
@@ -38,7 +37,6 @@ The **Dashboard Panel** extension displays a list of available dashboards and le
 ```
 
 6. Register the custom item extension to add the Web Page to the Web Dashboard.
-
 ```javascript
 function onBeforeRender(sender) {
   var dashboardControl = sender.GetDashboardControl();
