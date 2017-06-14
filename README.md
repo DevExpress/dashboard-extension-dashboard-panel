@@ -7,15 +7,15 @@ The **Dashboard Panel** extension displays a list of available dashboards and le
 2. Attach the download script (*dashboard-panel.min.js*) to the project.
 ```xml
 <head>
-    <!-- ... -->
     <script src="/your-path/dashboard-extension-dashboard-panel/dist/dashboard-panel.min.js"></script>
+    <!-- ... -->
 </head>
 ```
 3. Attach the download style sheet file (*dashboard-panel.css*) to the project.
 ```xml
 <head>
-    <!-- ... -->
     <link rel="stylesheet" type="text/css" href="/your-path/dashboard-extension-dashboard-panel/dist/dashboard-panel-style.css" />
+    <!-- ... -->
 </head>
 ```
 
