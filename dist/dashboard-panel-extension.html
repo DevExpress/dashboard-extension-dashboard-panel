@@ -1,10 +1,10 @@
 <script type="text/html" id="dx-dashboard-custom-working-mode-extension">
     <style>
-        .dx-dashboard-panel-extension {
+        .dx-dashboard-custom-panel-extension {
             background-color: white;
             z-index: 2;
         }
-        .dx-dashboard-panel-extension h1 {
+        .dx-dashboard-custom-panel-extension h1 {
             position:absolute;
             width: 100%;
             height:50px;
@@ -18,7 +18,7 @@
             font-weight:700;
             text-transform:uppercase;
         }
-        .dx-dashboard-panel-extension .dx-dashboard-edit-in-designer-button {
+        .dx-dashboard-custom-panel-extension .dx-dashboard-edit-in-designer-button {
             position: absolute;
             width: 100%;
             height: 110px;
@@ -31,23 +31,23 @@
 
             cursor: pointer;       
         }
-        .dx-dashboard-panel-extension .dx-dashboard-edit-in-designer-button svg {
+        .dx-dashboard-custom-panel-extension .dx-dashboard-edit-in-designer-button svg {
             width:32px;
             height:32px;
         }
-        .dx-dashboard-panel-extension .dx-dashboard-edit-in-designer-button:before {
+        .dx-dashboard-custom-panel-extension .dx-dashboard-edit-in-designer-button:before {
             content: '';
             display: inline-block;
             vertical-align: middle;
             height: 100%;
             width: .1px;
         }
-        .dx-dashboard-panel-extension .dx-dashboard-edit-in-designer-button>* {
+        .dx-dashboard-custom-panel-extension .dx-dashboard-edit-in-designer-button>* {
             display: inline-block;
             vertical-align: middle;
         }
 
-        .dx-dashboard-panel-extension .dx-dashboard-dashboard-list {
+        .dx-dashboard-custom-panel-extension .dx-dashboard-dashboard-list {
             position:absolute;
             top: 50px;
             bottom:110px;
@@ -57,11 +57,11 @@
             padding:0;
             color:#2D3034;
         }   
-        .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item {
+        .dx-dashboard-custom-panel-extension .dx-dashboard-dashboard-list .dx-list-item {
             border: none;
             border-bottom: solid 1px #E5E5E5;
         }
-        .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item-content {
+        .dx-dashboard-custom-panel-extension .dx-dashboard-dashboard-list .dx-list-item-content {
             height: 39px;
             line-height:39px;
             padding: 0px 0px 0px 20px;
@@ -69,21 +69,21 @@
             cursor: pointer;
         }
      
-        .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-state-hover, 
-        .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-state-focused {
+        .dx-dashboard-custom-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-state-hover, 
+        .dx-dashboard-custom-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-state-focused {
             background-color: #ECF4FF; 
             color:#2D3034;
         }
-        .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected,
-        .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected.dx-state-hover:not(.dx-state-focused),
-        .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected.dx-state-focused {
+        .dx-dashboard-custom-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected,
+        .dx-dashboard-custom-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected.dx-state-hover:not(.dx-state-focused),
+        .dx-dashboard-custom-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected.dx-state-focused {
             background-color: #DBE9FD;
             color:#2D3034;
         }
         .dx-dashboard-toolbox-extension {
             transition: left 500ms ease;
         }
-        .dx-dashboard-toolbar .dx-dashboard-viewer-button {
+        .dx-dashboard-toolbar .dx-dashboard-custom-viewer-button {
             width: 80px;
             height: 50px;
             line-height: 50px;
@@ -95,31 +95,31 @@
             text-transform:uppercase;
             cursor: pointer;   
         }
-        .dx-color-scheme-dark .dx-dashboard-panel-extension {
+        .dx-color-scheme-dark .dx-dashboard-custom-panel-extension {
             background-color: #111111;
         }
         .dx-color-scheme-dark h1 {
             color: #A9A9A9;
             border-bottom: solid 1px rgba(255, 255, 255, 0.2);
         }
-        .dx-color-scheme-dark .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-state-hover,
-        .dx-color-scheme-dark .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-state-focused {
+        .dx-color-scheme-dark .dx-dashboard-custom-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-state-hover,
+        .dx-color-scheme-dark .dx-dashboard-custom-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-state-focused {
             color: #A9A9A9;
             background-color: #004060;
         }
-        .dx-color-scheme-dark .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected,
-        .dx-color-scheme-dark .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected.dx-state-hover:not(.dx-state-focused),
-        .dx-color-scheme-dark .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected.dx-state-focused {
+        .dx-color-scheme-dark .dx-dashboard-custom-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected,
+        .dx-color-scheme-dark .dx-dashboard-custom-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected.dx-state-hover:not(.dx-state-focused),
+        .dx-color-scheme-dark .dx-dashboard-custom-panel-extension .dx-dashboard-dashboard-list .dx-list-item.dx-list-item-selected.dx-state-focused {
             color: #A9A9A9;
             background-color: #306080;
         }
-        .dx-color-scheme-dark .dx-dashboard-panel-extension .dx-dashboard-dashboard-list .dx-list-item {
+        .dx-color-scheme-dark .dx-dashboard-custom-panel-extension .dx-dashboard-dashboard-list .dx-list-item {
             border-bottom: solid 1px rgba(255, 255, 255, 0.2);
         }
     </style>
 
 
-    <div class="dx-dashboard-toolbox-extension dx-dashboard-panel-extension dx-dashboard-typography" data-bind="style: { width: panelWidth + 'px', left: left() + 'px'  }">
+    <div class="dx-dashboard-toolbox-extension dx-dashboard-custom-panel-extension dx-dashboard-typography" data-bind="style: { width: panelWidth + 'px', left: left() + 'px'  }">
         <h1 data-bind="text: DevExpress.Designer.getLocalization('DashboardWebStringId.Dashboards')"></h1>
         <div 
              class="dx-dashboard-dashboard-list dx-dashboard-typography" 
@@ -170,5 +170,5 @@
 </script>
 
 <script type="text/html" id="dx-dashboard-custom-working-mode-extension-viewer-button">
-    <div class='dx-dashboard-viewer-button' data-bind="click: click, text: DevExpress.Designer.getLocalization('DashboardWebStringId.Viewer')"></div>
+    <div class='dx-dashboard-custom-viewer-button' data-bind="click: click, text: DevExpress.Designer.getLocalization('DashboardWebStringId.Viewer')"></div>
 </script>

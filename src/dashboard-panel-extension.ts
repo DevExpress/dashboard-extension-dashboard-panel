@@ -2,7 +2,7 @@
 
 module DevExpress.Dashboard {
     export class CustomDashboardPanelExtension implements IExtension {
-        name = "dashboard-panel";
+        name = "custom-dashboard-panel";
 
         private _toolbarElement;
         private _customTemplate = {
@@ -24,7 +24,7 @@ module DevExpress.Dashboard {
         constructor(private _dashboardControl: any) {
             this._toolbarElement = new DashboardToolbarGroup("viewer-button", "", 100);
             var toViewerItem = new DashboardToolbarItem("toviewer", () => this.switchToViewer());
-            toViewerItem.template = "dx-dashboard-working-mode-extension-viewer-button";
+            toViewerItem.template = "dx-dashboard-custom-working-mode-extension-viewer-button";
             toViewerItem.disabled = ko.pureComputed(() => !!this._dashboardControl.dashboard());
 
             this.allowSwitchToDesigner(_dashboardControl.params.workingMode !== "ViewerOnly");

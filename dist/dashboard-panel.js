@@ -7,7 +7,7 @@ var DevExpress;
             function CustomDashboardPanelExtension(_dashboardControl) {
                 var _this = this;
                 this._dashboardControl = _dashboardControl;
-                this.name = "dashboard-panel";
+                this.name = "custom-dashboard-panel";
                 this._customTemplate = {
                     name: "dx-dashboard-custom-working-mode-extension",
                     data: this
@@ -44,7 +44,7 @@ var DevExpress;
                 };
                 this._toolbarElement = new Dashboard.DashboardToolbarGroup("viewer-button", "", 100);
                 var toViewerItem = new Dashboard.DashboardToolbarItem("toviewer", function () { return _this.switchToViewer(); });
-                toViewerItem.template = "dx-dashboard-working-mode-extension-viewer-button";
+                toViewerItem.template = "dx-dashboard-custom-working-mode-extension-viewer-button";
                 toViewerItem.disabled = ko.pureComputed(function () { return !!_this._dashboardControl.dashboard(); });
                 this.allowSwitchToDesigner(_dashboardControl.params.workingMode !== "ViewerOnly");
                 this._toolbarElement.items.push(toViewerItem);
