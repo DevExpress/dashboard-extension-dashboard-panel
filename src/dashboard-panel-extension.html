@@ -1,4 +1,4 @@
-﻿<script type="text/html" id="dx-dashboard-working-mode-extension">
+﻿<script type="text/html" id="dx-dashboard-custom-working-mode-extension">
     <style>
         .dx-dashboard-panel-extension {
             background-color: white;
@@ -135,13 +135,13 @@
          }, style: { bottom: allowSwitchToDesigner() ? '' : 0 }">
         </div>
         <!-- ko if: allowSwitchToDesigner -->
-            <!-- ko template: 'dx-dashboard-working-mode-extension-designer-button' -->
+            <!-- ko template: 'dx-dashboard-custom-working-mode-extension-designer-button' -->
             <!-- /ko -->
         <!-- /ko -->
     </div>
 </script>
 
-<script type="text/html" id="dx-dashboard-working-mode-extension-designer-button-icon">
+<script type="text/html" id="dx-dashboard-custom-working-mode-extension-designer-button-icon">
     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
          viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
         <style type="text/css">
@@ -159,16 +159,16 @@
     </svg>
 </script>
 
-<script type="text/html" id="dx-dashboard-working-mode-extension-designer-button">
+<script type="text/html" id="dx-dashboard-custom-working-mode-extension-designer-button">
     <div class="dx-dashboard-edit-in-designer-button" data-bind="click: switchToDesigner">
         <div style="display:inline-block">
-            <!-- ko template: 'dx-dashboard-working-mode-extension-designer-button-icon' -->
+            <!-- ko template: 'dx-dashboard-custom-working-mode-extension-designer-button-icon' -->
             <!-- /ko -->
             <br /><span data-bind="text: DevExpress.Designer.getLocalization('DashboardWebStringId.EditInDesigner')"></span>
         </div>
     </div>
 </script>
 
-<script type="text/html" id="dx-dashboard-working-mode-extension-viewer-button">
+<script type="text/html" id="dx-dashboard-custom-working-mode-extension-viewer-button">
     <div class='dx-dashboard-viewer-button' data-bind="click: click, text: DevExpress.Designer.getLocalization('DashboardWebStringId.Viewer')"></div>
 </script>

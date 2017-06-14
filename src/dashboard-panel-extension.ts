@@ -1,21 +1,17 @@
 ﻿/// <reference path="../typings/index.d.ts" />
 
 module DevExpress.Dashboard {
-    /*# public class DashboardPanelExtension: IExtension #*/
-    export class DashboardPanelExtension implements IExtension {
+    export class CustomDashboardPanelExtension implements IExtension {
         name = "dashboard-panel";
 
         private _toolbarElement;
         private _customTemplate = {
-            name: "dx-dashboard-working-mode-extension",
+            name: "dx-dashboard-custom-working-mode-extension",
             data: this
         }
 
-        /*# public int panelWidth { get { return 0; } set { ; } } #*/
         panelWidth = 250;
-        /*# public KnockoutObservableBoolean visible { get { return null; } set { ; } } #*/
         visible = ko.observable(false);
-        /*# public KnockoutObservableBoolean allowSwitchToDesigner { get { return null; } set { ; } } #*/
         allowSwitchToDesigner = ko.observable<boolean>(true);
 
         desingerToViewerAction: ISequenceAction;
