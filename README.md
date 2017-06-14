@@ -4,25 +4,39 @@ The **Dashboard Panel** extension displays a list of available dashboards and le
 
 1. Download the required version of scripts [here](https://github.com/DevExpress/dashboard-extension-dashboard-panel/releases/) and add the *dist* folder in your project.
 
-2. Attach the download script to the project.
+2. Attach the download script (*dashboard-panel.min.js*) to the project.
 ```xml
 <script src="/your-path/dashboard-extension-dashboard-panel/dist/dashboard-panel.min.js"></script>
 ```
-
-3. Handle the Web Dashboard's [BeforeRender](https://documentation.devexpress.com/#Dashboard/DevExpressDashboardWebScriptsASPxClientDashboard_BeforeRendertopic) event to perform client-side customization of the Web Dashboard control before the control and its elements have been rendered.
+3. Attach the download style sheet file (*dashboard-panel.css*) to the project.
 ```xml
+<link rel="stylesheet" type="text/css" href="/your-path/dashboard-extension-dashboard-panel/dist/dashboard-panel-style.css" />
+```
+
+4. Add the ```/dashboard-extension-dashboard-panel/dist/dashboard-panel.html``` file content inside the ```<body>``` section onto the page containing Web Dashboard. 
+
+5. Handle the Web Dashboard's [BeforeRender](https://documentation.devexpress.com/#Dashboard/DevExpressDashboardWebScriptsASPxClientDashboard_BeforeRendertopic) event to perform client-side customization of the Web Dashboard control before the control and its elements have been rendered.
+
+```xml
+<!-- For ASP.NET Web Forms -->
 <dx:ASPxDashboard ID="ASPxDashboard1" runat="server" DashboardStorageFolder="~/App_Data/Dashboards">
   <ClientSideEvents BeforeRender="onBeforeRender" />
 </dx:ASPxDashboard>
 ```
+```C#
+@* For ASP.NET MVC *@
+@Html.DevExpress().Dashboard(settings => {
+    settings.Name = "Dashboard";
+    settings.ClientSideEvents.BeforeRender = "onBeforeRender";
+}).GetHtml()
+```
 
-
-4. Register the custom item extension to add the Web Page to the Web Dashboard.
+6. Register the custom item extension to add the Web Page to the Web Dashboard.
 
 ```javascript
 function onBeforeRender(sender) {
   var dashboardControl = sender.GetDashboardControl();
-  dashboardControl.registerExtension(new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl));
+  dashboardControl.registerExtension(new CustomExtensions.CustomDashboardPanelExtension(dashboardControl));
 }
 ```
 
