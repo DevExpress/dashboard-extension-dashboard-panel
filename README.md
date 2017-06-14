@@ -6,7 +6,7 @@ The **Dashboard Panel** extension displays a list of available dashboards and le
 
 2. Attach the download script to the project.
 ```xml
-<script src="/your-path/dashboard-extension-webpage-item/dist/webpage-extension.js"></script>
+<script src="/your-path/dashboard-extension-dashboard-panel/dist/dashboard-panel.min.js"></script>
 ```
 
 3. Handle the Web Dashboard's [BeforeRender](https://documentation.devexpress.com/#Dashboard/DevExpressDashboardWebScriptsASPxClientDashboard_BeforeRendertopic) event to perform client-side customization of the Web Dashboard control before the control and its elements have been rendered.
