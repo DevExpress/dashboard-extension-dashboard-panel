@@ -2,7 +2,7 @@ The **Dashboard Panel** extension displays a list of available dashboards and le
 
 ## Installation
 
-1. Download the required version of scripts [here](https://github.com/DevExpress/dashboard-extension-dashboard-panel/releases/) and add the *dist* folder in your project.
+1. Download the latest version of scripts [here](https://github.com/DevExpress/dashboard-extension-dashboard-panel/releases/) and add the *dist* folder in your project.
 
 2. Attach the download script (*dashboard-panel.min.js*) to the project.
 ```xml
