@@ -1,12 +1,12 @@
 ﻿/// <reference path="../typings/index.d.ts" />
 
-module DevExpress.Dashboard {
-    export class CustomDashboardPanelExtension implements IExtension {
+module CustomExtensions {
+    export class CustomDashboardPanelExtension implements DevExpress.Dashboard.IExtension {
         name = "custom-dashboard-panel";
 
         private _toolbarElement;
         private _customTemplate = {
-            name: "dx-dashboard-custom-working-mode-extension",
+            name: "dashboard-custom-panel-extension",
             data: this
         }
 
@@ -14,17 +14,17 @@ module DevExpress.Dashboard {
         visible = ko.observable(false);
         allowSwitchToDesigner = ko.observable<boolean>(true);
 
-        desingerToViewerAction: ISequenceAction;
-        viewerToDesignerAction: ISequenceAction;
+        desingerToViewerAction: DevExpress.Dashboard.ISequenceAction;
+        viewerToDesignerAction: DevExpress.Dashboard.ISequenceAction;
         left: KnockoutComputed<number>;
         selectedItemKeys = ko.observableArray<string>();
-        availableDashboards = ko.observableArray<IDashboardInfo>();
+        availableDashboards = ko.observableArray<DevExpress.Dashboard.IDashboardInfo>();
 
 
         constructor(private _dashboardControl: any) {
-            this._toolbarElement = new DashboardToolbarGroup("viewer-button", "", 100);
-            var toViewerItem = new DashboardToolbarItem("toviewer", () => this.switchToViewer());
-            toViewerItem.template = "dx-dashboard-custom-working-mode-extension-viewer-button";
+            this._toolbarElement = new DevExpress.Dashboard.DashboardToolbarGroup("viewer-button", "", 100);
+            var toViewerItem = new DevExpress.Dashboard.DashboardToolbarItem("toviewer", () => this.switchToViewer());
+            toViewerItem.template = "dashboard-custom-panel-extension-viewer-button";
             toViewerItem.disabled = ko.pureComputed(() => !!this._dashboardControl.dashboard());
 
             this.allowSwitchToDesigner(_dashboardControl.params.workingMode !== "ViewerOnly");
@@ -55,7 +55,7 @@ module DevExpress.Dashboard {
         start() {
             this._dashboardControl.customTemplates.push(this._customTemplate);
 
-            var extension = <ToolboxExtension>this._dashboardControl.findExtension("toolbox");
+            var extension = <DevExpress.Dashboard.ToolboxExtension>this._dashboardControl.findExtension("toolbox");
             if(extension) {
                 extension.toolbarGroups.push(this._toolbarElement);
             }
@@ -77,7 +77,7 @@ module DevExpress.Dashboard {
         }
 
         stop() {
-            var extension = <ToolboxExtension>this._dashboardControl.findExtension("toolbox");
+            var extension = <DevExpress.Dashboard.ToolboxExtension>this._dashboardControl.findExtension("toolbox");
             if(extension) {
                 extension.toolbarGroups.remove(this._toolbarElement);
             }
@@ -86,11 +86,11 @@ module DevExpress.Dashboard {
 
         updateDashboardsList() {
             var dashboardContainer = this._dashboardControl.dashboardContainer();
-            this._dashboardControl.dashboardServiceClient.requestDashboardList().done((availableDashboards: Array<IDashboardInfo>) => {
+            this._dashboardControl.dashboardServiceClient.requestDashboardList().done((availableDashboards: Array<DevExpress.Dashboard.IDashboardInfo>) => {
                 this.availableDashboards(availableDashboards);
             });
         }
-        private _validateSelection(dashboardContainer: IDashboardContainer, avaliableDashboards: IDashboardInfo[]) {
+        private _validateSelection(dashboardContainer: DevExpress.Dashboard.IDashboardContainer, avaliableDashboards: DevExpress.Dashboard.IDashboardInfo[]) {
             if(dashboardContainer) {
                 var dashboardInfo = avaliableDashboards.filter(info => info.id === dashboardContainer.id)[0];
                 if(dashboardInfo) {
@@ -99,7 +99,7 @@ module DevExpress.Dashboard {
             }
         }
 
-        showPanelAsync = (options: IWorkingModeSwitchingOptions) => {
+        showPanelAsync = (options: DevExpress.Dashboard.IWorkingModeSwitchingOptions) => {
             var def = $.Deferred();
             this.visible(true);
             setTimeout(() => {
@@ -108,7 +108,7 @@ module DevExpress.Dashboard {
             }, 500);
             return def.promise();
         }
-        hidePanelAsync = (options: IWorkingModeSwitchingOptions) => {
+        hidePanelAsync = (options: DevExpress.Dashboard.IWorkingModeSwitchingOptions) => {
             var def = $.Deferred();
             this.visible(false);
             setTimeout(() => {

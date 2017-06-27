@@ -8,13 +8,18 @@ var fileName = "dashboard-panel";
 gulp.task("default", ["build"]);
 
 
+gulp.task("copy_css", function(){
+	gulp
+		.src(["./src/*.css"])
+		.pipe(gulp.dest("./dist"));
+});
 gulp.task("copy_html", function(){
 	gulp
 		.src(["./src/*.html"])
 		.pipe(gulp.dest("./dist"));
 });
 
-gulp.task("build", ["copy_html"], function(){
+gulp.task("build", ["copy_html", "copy_css"], function(){
 	gulp
 		.src([ "./typings/index.d.ts", "./src/*.ts"])
 		.pipe(ts({
