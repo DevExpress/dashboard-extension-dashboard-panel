@@ -1,8 +1,8 @@
-The **Dashboard Panel** extension displays a list of available dashboards and lets you switch between the designer and viewer modes. You can see the dashboard panel in action by visiting the [DevExpress Web Dashboard Demo](https://demos.devexpress.com/Dashboard/).
+The **Dashboard Panel** is a [Web Dashboard extension](https://documentation.devexpress.com/#Dashboard/CustomDocument117232) that displays a list of available dashboards and lets you switch between the designer and viewer modes. You can see the dashboard panel in action by visiting the [DevExpress Web Dashboard Demo](https://demos.devexpress.com/Dashboard/).
 
 ## Installation
 
-1. Download the latest version of scripts [here](https://github.com/DevExpress/dashboard-extension-dashboard-panel/releases/) and add the *dist* folder in your project.
+1. Download the latest version of scripts [here](https://github.com/DevExpress/dashboard-extension-dashboard-panel/releases/) and add the *dist* folder in your project containing Web Dashboard.
 
 2. Attach the download script (*dashboard-panel.min.js*) to the project.
 ```xml
