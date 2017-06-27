@@ -40,9 +40,6 @@ module DevExpress.Dashboard {
                 action: this.hidePanelAsync
             }
 
-            if(!this._dashboardControl.isDesignMode()) {
-                this._dashboardControl.surfaceLeft(this.panelWidth);
-            }
             this.visible(!this._dashboardControl.isDesignMode());
 
             this.selectedItemKeys.subscribe(value => {
@@ -53,16 +50,6 @@ module DevExpress.Dashboard {
                     }
                 }
             });
-
-            this._dashboardControl.dashboardContainer.subscribe(dashboardContainer => {
-                if(dashboardContainer) {
-                    this._validateSelection(dashboardContainer, this.availableDashboards())
-                }
-            });
-            this.availableDashboards.subscribe(avaliableDashboards =>
-                this._validateSelection(this._dashboardControl.dashboardContainer(), avaliableDashboards));
-
-            this.left = ko.computed(() => this.visible() ? 0 : -this.panelWidth);
         }
 
         start() {
@@ -72,6 +59,20 @@ module DevExpress.Dashboard {
             if(extension) {
                 extension.toolbarGroups.push(this._toolbarElement);
             }
+
+            this._dashboardControl.dashboardContainer.subscribe(dashboardContainer => {
+                if(dashboardContainer) {
+                    this._validateSelection(dashboardContainer, this.availableDashboards())
+                }
+            });
+            this.availableDashboards.subscribe(avaliableDashboards =>
+                this._validateSelection(this._dashboardControl.dashboardContainer(), avaliableDashboards));
+
+            if(!this._dashboardControl.isDesignMode()) {
+                this._dashboardControl.surfaceLeft(this.panelWidth);
+            }
+            this.left = ko.computed(() => this.visible() ? 0 : -this.panelWidth);
+
             this.updateDashboardsList();
         }
 
