@@ -16,7 +16,7 @@ The **Dashboard Panel** is a [Web Dashboard extension](https://documentation.dev
 4. Attach the download style sheet file (*dashboard-panel.css*) to the project.
 ```xml
 <head>
-    <link rel="stylesheet" type="text/css" href="/dist/dashboard-panel-style.css" />
+    <link rel="stylesheet" type="text/css" href="/dist/dashboard-panel.css" />
     <!-- ... -->
 </head>
 ```
