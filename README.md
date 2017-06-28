@@ -2,26 +2,28 @@ The **Dashboard Panel** is a [Web Dashboard extension](https://documentation.dev
 
 ## Installation
 
-1. Download the latest version of scripts [here](https://github.com/DevExpress/dashboard-extension-dashboard-panel/releases/) and add the *dist* folder in your project containing Web Dashboard.
+1. Download the latest version of the extension [here](https://github.com/DevExpress/dashboard-extension-dashboard-panel/releases/).
 
-2. Attach the download script (*dashboard-panel.min.js*) to the project.
+2. Add the *dist/dashboard-panel.css* and *dist/dashboard-panel.min.js* files in your project.
+
+3. Attach the download script (*dashboard-panel.min.js*) to the project inside the `<head>` section onto the page containing Web Dashboard.
 ```xml
 <head>
-    <script src="/your-path/dashboard-extension-dashboard-panel/dist/dashboard-panel.min.js"></script>
+    <script src="/dist/dashboard-panel.min.js"></script>
     <!-- ... -->
 </head>
 ```
-3. Attach the download style sheet file (*dashboard-panel.css*) to the project.
+4. Attach the download style sheet file (*dashboard-panel.css*) to the project.
 ```xml
 <head>
-    <link rel="stylesheet" type="text/css" href="/your-path/dashboard-extension-dashboard-panel/dist/dashboard-panel-style.css" />
+    <link rel="stylesheet" type="text/css" href="/dist/dashboard-panel-style.css" />
     <!-- ... -->
 </head>
 ```
 
-4. Add the ```/dashboard-extension-dashboard-panel/dist/dashboard-panel.html``` file content inside the ```<body>``` section onto the page containing Web Dashboard. 
+5. Add the `/dist/dashboard-panel.html` file content inside the `<body>` section. 
 
-5. Handle the Web Dashboard's [BeforeRender](https://documentation.devexpress.com/#Dashboard/DevExpressDashboardWebScriptsASPxClientDashboard_BeforeRendertopic) event to perform client-side customization of the Web Dashboard control before the control and its elements have been rendered.
+6. Handle the Web Dashboard's [BeforeRender](https://documentation.devexpress.com/#Dashboard/DevExpressDashboardWebScriptsASPxClientDashboard_BeforeRendertopic) event to perform client-side customization of the Web Dashboard control before the control and its elements have been rendered.
 ```xml
 <!-- For ASP.NET Web Forms -->
 <dx:ASPxDashboard ID="ASPxDashboard1" runat="server" DashboardStorageFolder="~/App_Data/Dashboards">
@@ -36,7 +38,7 @@ The **Dashboard Panel** is a [Web Dashboard extension](https://documentation.dev
 }).GetHtml()
 ```
 
-6. Register the custom item extension to add the Web Page to the Web Dashboard.
+7. Register the custom item extension to add the Dashboard Panel to the Web Dashboard.
 ```javascript
 function onBeforeRender(sender) {
   var dashboardControl = sender.GetDashboardControl();
@@ -91,6 +93,6 @@ This extension is distributed under the **MIT** license (free and open-source), 
 
 ## Support & Feedback
 
-* Follow [this guideline](https://www.devexpress.com/Support/Center/Question/Details/T491859) for general information about a custom extension.
-* To learn how to create a custom item, see the following [KB article](https://www.devexpress.com/Support/Center/Question/Details/T491984).
+* Refer to [this section](https://documentation.devexpress.com/#Dashboard/CustomDocument117232) for general information about client-side extensions.
+* To learn how to work with extensions, see the following [KB article](https://www.devexpress.com/Support/Center/Question/Details/T466716).
 * To address questions regarding the Web Dashboard and JavaScript API, use [DevExpress Support Center](https://www.devexpress.com/Support/Center).
