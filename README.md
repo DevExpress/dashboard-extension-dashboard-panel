@@ -1,4 +1,8 @@
-The **Dashboard Panel** is a [Web Dashboard extension](https://documentation.devexpress.com/#Dashboard/CustomDocument117232) that displays a list of available dashboards and lets you switch between the designer and viewer modes. You can see the dashboard panel in action by visiting the [DevExpress Web Dashboard Demo](https://demos.devexpress.com/Dashboard/).
+The **Dashboard Panel** is a [Web Dashboard extension](https://documentation.devexpress.com/#Dashboard/CustomDocument117232) that displays a list of available dashboards and lets you switch between the designer and viewer modes. 
+
+![web-panel](https://user-images.githubusercontent.com/17986517/27797519-a6e7835c-6016-11e7-8abe-2331c9af6ccf.png)
+
+You can see the dashboard panel in action by visiting the [DevExpress Web Dashboard Demo](https://demos.devexpress.com/Dashboard/).
 
 ## Installation
 
