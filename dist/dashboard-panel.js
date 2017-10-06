@@ -59,7 +59,7 @@ var CustomExtensions;
                 if (value.length) {
                     var newDashboardId = value[0];
                     if (_this._dashboardControl.dashboardContainer() && _this._dashboardControl.dashboardContainer().id != newDashboardId) {
-                        _this._dashboardControl.dashboardServiceClient.loadDashboard(newDashboardId);
+                        _this._dashboardControl.loadDashboard(newDashboardId);
                     }
                 }
             });
@@ -95,7 +95,7 @@ var CustomExtensions;
         CustomDashboardPanelExtension.prototype.updateDashboardsList = function () {
             var _this = this;
             var dashboardContainer = this._dashboardControl.dashboardContainer();
-            this._dashboardControl.dashboardServiceClient.requestDashboardList().done(function (availableDashboards) {
+            this._dashboardControl.requestDashboardList().done(function (availableDashboards) {
                 _this.availableDashboards(availableDashboards);
             });
         };

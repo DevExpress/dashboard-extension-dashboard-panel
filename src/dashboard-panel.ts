@@ -46,7 +46,7 @@ module CustomExtensions {
                 if(value.length) {
                     var newDashboardId = value[0];
                     if(this._dashboardControl.dashboardContainer()&&this._dashboardControl.dashboardContainer().id!=newDashboardId) {
-                        this._dashboardControl.dashboardServiceClient.loadDashboard(newDashboardId);
+                        this._dashboardControl.loadDashboard(newDashboardId);
                     }
                 }
             });
@@ -86,7 +86,7 @@ module CustomExtensions {
 
         updateDashboardsList() {
             var dashboardContainer = this._dashboardControl.dashboardContainer();
-            this._dashboardControl.dashboardServiceClient.requestDashboardList().done((availableDashboards: Array<DevExpress.Dashboard.IDashboardInfo>) => {
+            this._dashboardControl.requestDashboardList().done((availableDashboards: Array<DevExpress.Dashboard.IDashboardInfo>) => {
                 this.availableDashboards(availableDashboards);
             });
         }
