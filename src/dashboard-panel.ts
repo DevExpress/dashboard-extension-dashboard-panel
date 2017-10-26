@@ -27,7 +27,7 @@ module CustomExtensions {
             toViewerItem.template = "dashboard-custom-panel-extension-viewer-button";
             toViewerItem.disabled = ko.pureComputed(() => !!this._dashboardControl.dashboard());
 
-            this.allowSwitchToDesigner(_dashboardControl.params.workingMode !== "ViewerOnly");
+            this.allowSwitchToDesigner(_dashboardControl.allowSwitchToDesigner);
 
             this._toolbarElement.items.push(toViewerItem);
 

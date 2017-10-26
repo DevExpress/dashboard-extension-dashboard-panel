@@ -44,7 +44,7 @@ var CustomExtensions;
             var toViewerItem = new DevExpress.Dashboard.DashboardToolbarItem("toviewer", function () { return _this.switchToViewer(); });
             toViewerItem.template = "dashboard-custom-panel-extension-viewer-button";
             toViewerItem.disabled = ko.pureComputed(function () { return !!_this._dashboardControl.dashboard(); });
-            this.allowSwitchToDesigner(_dashboardControl.params.workingMode !== "ViewerOnly");
+            this.allowSwitchToDesigner(_dashboardControl.allowSwitchToDesigner);
             this._toolbarElement.items.push(toViewerItem);
             this.desingerToViewerAction = {
                 orderNo: 60,
