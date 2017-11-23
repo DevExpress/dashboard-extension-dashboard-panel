@@ -18,6 +18,7 @@ var CustomExtensions;
             this.showPanelAsync = function (options) {
                 var def = $.Deferred();
                 _this.visible(true);
+                _this.updateDashboardsList();
                 setTimeout(function () {
                     options.surfaceLeft = _this.panelWidth;
                     def.resolve(options);
@@ -35,7 +36,6 @@ var CustomExtensions;
             };
             this.switchToViewer = function () {
                 _this._dashboardControl.switchToViewer();
-                _this.updateDashboardsList();
             };
             this.switchToDesigner = function () {
                 _this._dashboardControl.switchToDesigner();
@@ -58,7 +58,7 @@ var CustomExtensions;
             this.selectedItemKeys.subscribe(function (value) {
                 if (value.length) {
                     var newDashboardId = value[0];
-                    if (_this._dashboardControl.dashboardContainer() && _this._dashboardControl.dashboardContainer().id != newDashboardId) {
+                    if (!_this._dashboardControl.dashboardContainer() || _this._dashboardControl.dashboardContainer().id !== newDashboardId) {
                         _this._dashboardControl.loadDashboard(newDashboardId);
                     }
                 }

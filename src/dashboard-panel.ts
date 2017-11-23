@@ -45,7 +45,7 @@ module CustomExtensions {
             this.selectedItemKeys.subscribe(value => {
                 if(value.length) {
                     var newDashboardId = value[0];
-                    if(this._dashboardControl.dashboardContainer()&&this._dashboardControl.dashboardContainer().id!=newDashboardId) {
+                    if(!this._dashboardControl.dashboardContainer() || this._dashboardControl.dashboardContainer().id !== newDashboardId) {
                         this._dashboardControl.loadDashboard(newDashboardId);
                     }
                 }
@@ -102,6 +102,7 @@ module CustomExtensions {
         showPanelAsync = (options: DevExpress.Dashboard.IWorkingModeSwitchingOptions) => {
             var def = $.Deferred();
             this.visible(true);
+            this.updateDashboardsList();
             setTimeout(() => {
                 options.surfaceLeft = this.panelWidth;
                 def.resolve(options);
@@ -119,7 +120,6 @@ module CustomExtensions {
         }
         switchToViewer = (): void => {
             this._dashboardControl.switchToViewer();
-            this.updateDashboardsList();
         }
         switchToDesigner = (): void => {
             this._dashboardControl.switchToDesigner();
