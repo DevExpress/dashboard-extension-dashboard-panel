@@ -14,7 +14,7 @@ module CustomExtensions {
         visible = ko.observable(false);
         allowSwitchToDesigner = ko.observable<boolean>(true);
 
-        desingerToViewerAction: DevExpress.Dashboard.ISequenceAction;
+        designerToViewerAction: DevExpress.Dashboard.ISequenceAction;
         viewerToDesignerAction: DevExpress.Dashboard.ISequenceAction;
         left: KnockoutComputed<number>;
         selectedItemKeys = ko.observableArray<string>();
@@ -31,7 +31,7 @@ module CustomExtensions {
 
             this._toolbarElement.items.push(toViewerItem);
 
-            this.desingerToViewerAction = {
+            this.designerToViewerAction = {
                 orderNo: 60,
                 action: this.showPanelAsync
             }

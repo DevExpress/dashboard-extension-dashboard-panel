@@ -46,7 +46,7 @@ var CustomExtensions;
             toViewerItem.disabled = ko.pureComputed(function () { return !!_this._dashboardControl.dashboard(); });
             this.allowSwitchToDesigner(_dashboardControl.allowSwitchToDesigner);
             this._toolbarElement.items.push(toViewerItem);
-            this.desingerToViewerAction = {
+            this.designerToViewerAction = {
                 orderNo: 60,
                 action: this.showPanelAsync
             };
