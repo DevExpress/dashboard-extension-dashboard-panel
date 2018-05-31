@@ -1,18 +1,57 @@
 <script type="text/html" id="dashboard-custom-panel-extension">
-    <div class="dx-dashboard-toolbox-extension dx-dashboard-custom-panel-extension dx-dashboard-typography" data-bind="style: { width: panelWidth + 'px', left: left() + 'px'  }">
-        <h1 data-bind="text: DevExpress.Designer.getLocalization('DashboardWebStringId.Dashboards')"></h1>
+    <div class="dx-dashboard-toolbox-extension dx-dashboard-custom-panel-extension dx-dashboard-typography" data-bind="style: { width: panelWidth() + 'px', left: left() + 'px'  }, 
+                                                                                                                css: { 'dx-dashboard-card-view-panel': isMobile() }">
+        <div class="dx-dashboard-title-panel">
+            <div class="dx-dashboard-title-text" data-bind="text: DevExpress.Designer.getLocalization('DashboardWebStringId.Dashboards')"></div>
+            <!-- ko if: isMobile -->
+            <!-- ko template: 'dx-dashboard-custom-panel-close-icon' -->
+            <!-- /ko -->
+            <!-- /ko -->
+        </div>
         <div 
              class="dx-dashboard-dashboard-list dx-dashboard-typography" 
              data-bind="dxList: { 
-                        noDataText: '',
-                        dataSource: availableDashboards,
-                        keyExpr: 'id',
-                        selectionMode: 'single',
-                        itemTemplate: function(itemData) { return itemData.name;  },
-                        activeStateEnabled: false,
-                        selectedItemKeys: selectedItemKeys
-                        
-         }, style: { bottom: allowSwitchToDesigner() ? '' : 0 }">
+                            noDataText: '',
+                            dataSource: availableDashboards,
+                            keyExpr: 'id',
+                            selectionMode: 'single',
+                            itemTemplate: itemTemplate,
+                            activeStateEnabled: false,
+                            selectedItemKeys: selectedItemKeys,
+                            onItemClick: hidePanel,
+                            searchEnabled: isMobile,
+                            searchExpr: 'id',
+                            hoverStateEnabled: !isMobile,
+                            focusStateEnabled: !isMobile,
+                            searchEditorOptions: {
+                                placeholder: DevExpress.Designer.getLocalization('DashboardWebStringId.Search')
+                            },
+                            onContentReady: function (e) {
+                                if(e.component.option('selectedItems').length !== 0)
+                                    e.component.scrollToItem(e.component.option('selectedItems')[0]);
+                            }
+                        }, 
+                        style: { bottom: allowSwitchToDesigner() ? '' : 0 }">
+            <div data-options="dxTemplate:{ name: 'dashboard-card-view' }">
+                <div class="dx-dashboard-card-view">
+                    <div class='dx-dashboard-card-name' data-bind="text: name"></div>
+                </div>
+            </div>
+            <div data-options="dxTemplate:{ name: 'dashboard-preview' }">
+                <div class="dx-dashboard-preview" data-bind="css: { 'dx-dashboard-minimized': hidden }">
+                    <div class='dx-dashboard-image-container' data-bind="css: { 'dx-dashboard-hidden': hidden }">
+                        <img class="dx-dashboard-image" data-bind="attr: { 
+                             src: imageUrl, alt: name },
+                             event: { error: hide }"/>
+                    </div>
+                    <div class="dx-dashboard-name-container">
+                        <div class='dx-dashboard-name' data-bind="text: name"></div>
+                    </div>
+                </div>
+            </div>
+            <div data-options="dxTemplate:{ name: 'dashboard-list-item' }">
+                <div data-bind="text: name"></div>
+            </div>
         </div>
         <!-- ko if: allowSwitchToDesigner -->
             <!-- ko template: 'dashboard-custom-panel-extension-designer-button' -->
@@ -50,5 +89,21 @@
 </script>
 
 <script type="text/html" id="dashboard-custom-panel-extension-viewer-button">
-    <div class='dx-dashboard-custom-viewer-button' data-bind="click: click, text: DevExpress.Designer.getLocalization('DashboardWebStringId.Viewer')"></div>
+    <div class='dx-dashboard-viewer-button' data-bind="click: click, text: DevExpress.Designer.getLocalization('DashboardWebStringId.Viewer')"></div>
 </script>
+
+<script type="text/html" id="dx-dashboard-custom-panel-close-icon">
+    <div class="dx-dashboard-custom-panel-close-icon"  data-bind="click: hidePanel">
+        <svg class="dx-dashboard-svg" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+             viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
+<style type="text/css">
+    .dx_gray {
+        fill: #7B7B7B;
+    }
+</style>
+<polygon class="dx_gray" points="19,7 16,7 12,11 8,7 5,7 10.5,12.5 5,18 8,18 12,14 16,18 19,18 13.5,12.5 " />
+
+</svg>
+        </div>
+</script>
+

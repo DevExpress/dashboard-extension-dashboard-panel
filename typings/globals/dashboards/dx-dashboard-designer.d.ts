@@ -352,6 +352,446 @@ declare module DevExpress.Dashboard {
     }
 }
 
+declare module DevExpress.Dashboard.Data {
+    type ItemDataAxisName = 'Default' | 'Series' | 'Argument' | 'Sparkline' | 'Column' | 'Row';
+    type AxisValuesDictionary = {
+        [axisName: string]: Array<PrimitiveType>;
+    };
+    interface ItemData {
+        createTuple(values: Array<ItemDataAxisPoint> | Array<{
+            axisName: ItemDataAxisName;
+            value: Array<PrimitiveType>;
+        }>): ItemDataAxisPointTuple;
+        getAxis(axisName: ItemDataAxisName): ItemDataAxis;
+        getAxisNames(): Array<ItemDataAxisName>;
+        getDataMembers(): Array<string>;
+        getDeltas(): Array<ItemDataDelta>;
+        getDeltaValue(deltaId: string): ItemDataDeltaValue;
+        getDimensions(axisName: ItemDataAxisName): Array<ItemDataDimension>;
+        getMeasures(): Array<ItemDataMeasure>;
+        getMeasureValue(measureId: string): ItemDataMeasureValue;
+        getSlice(value: ItemDataAxisPointTuple | ItemDataAxisPoint): ItemData;
+    }
+    interface ItemDataAxis {
+        getDimensions(): Array<ItemDataDimension>;
+        getPointByUniqueValues(values: Array<PrimitiveType>): ItemDataAxisPoint;
+        getPoints(): Array<ItemDataAxisPoint>;
+        getPointsByDimension(dimensionId: string): Array<ItemDataAxisPoint>;
+        getRootPoint(): ItemDataAxisPoint;
+    }
+    interface ItemDataAxisPoint {
+        getAxisName(): string;
+        getChildren(): Array<ItemDataAxisPoint>;
+        getDimension(): ItemDataDimension;
+        getDimensions(): Array<ItemDataDimension>;
+        getDimensionValue(dimensionId?: string): ItemDataDimensionValue;
+        getDisplayText(): string;
+        getParent(): ItemDataAxisPoint;
+        getUniqueValue(): PrimitiveType;
+        getValue(): PrimitiveType;
+    }
+    interface ItemDataAxisPointTuple {
+        getAxisPoint(axisName?: ItemDataAxisName): ItemDataAxisPoint;
+    }
+    interface ItemDataDelta {
+        actualMeasureId: string;
+        id: string;
+        name: string;
+        targetMeasureId: string;
+    }
+    interface ItemDataDeltaValue {
+        getAbsoluteVariation(): ItemDataMeasureValue;
+        getActualValue(): ItemDataMeasureValue;
+        getDisplaySubValue1(): ItemDataMeasureValue;
+        getDisplaySubValue2(): ItemDataMeasureValue;
+        getDisplayValue(): ItemDataMeasureValue;
+        getIndicatorType(): ItemDataMeasureValue;
+        getIsGood(): ItemDataMeasureValue;
+        getPercentOfTarget(): ItemDataMeasureValue;
+        getPercentVariation(): ItemDataMeasureValue;
+        getTargetValue(): ItemDataMeasureValue;
+    }
+    interface ItemDataDimension {
+        dataMember: string;
+        dateTimeGroupInterval: string;
+        id: string;
+        name: string;
+        textGroupInterval: string;
+        format: (value: any) => string;
+    }
+    interface ItemDataDimensionValue {
+        getDisplayText(): string;
+        getUniqueValue(): PrimitiveType;
+        getValue(): PrimitiveType;
+    }
+    interface ItemDataMeasure {
+        dataMember: string;
+        id: string;
+        name: string;
+        summaryType: string;
+        format: (value: any) => string;
+    }
+    interface ItemDataMeasureValue {
+        getDisplayText(): string;
+        getValue(): number;
+    }
+    interface RequestUnderlyingDataParameters {
+        axisPoints: Array<ItemDataAxisPoint>;
+        dataMembers: Array<string>;
+        uniqueValuesByAxisName: AxisValuesDictionary;
+        valuesByAxisName: AxisValuesDictionary;
+    }
+    interface ItemUnderlyingData {
+        getDataMembers(): Array<string>;
+        getRequestDataError(): string;
+        getRowCount(): number;
+        getRowValue(rowIndex: number, columnName: string): PrimitiveType;
+        isDataReceived(): boolean;
+    }
+    interface RangeFilterSelection {
+        minimum: number | Date;
+        maximum: number | Date;
+    }
+}
+
+declare module DevExpress.Dashboard {
+    import Data = DevExpress.Dashboard.Data;
+    type PrimitiveType = boolean | string | number | Date;
+    interface ItemWidgetEventArgs {
+        itemName: string;
+        getWidget: () => DevExpress.ui.Widget | Element;
+    }
+    interface ItemElementCustomColorEventArgs {
+        itemName: string;
+        getTargetElement: () => Data.ItemDataAxisPointTuple;
+        getMeasures: () => Array<Data.ItemDataMeasure>;
+        getColor: () => string;
+        setColor: (color: string) => void;
+    }
+    interface ItemVisualInteractivityEventArgs {
+        itemName: string;
+        getSelectionMode: () => string;
+        setSelectionMode: (value: string) => void;
+        isHighlightingEnabled: () => boolean;
+        enableHighlighting: (value: boolean) => void;
+        getTargetAxes: () => string;
+        setTargetAxes: (value: boolean) => void;
+        getDefaultSelection(): Array<Data.ItemDataAxisPointTuple>;
+        setDefaultSelection(selection: Array<Data.ItemDataAxisPointTuple>): void;
+    }
+    interface ItemClickEventArgs {
+        itemName: string;
+        getData: () => Data.ItemData;
+        getAxisPoint: () => Data.ItemDataAxisPoint;
+        getMeasures: () => Data.ItemDataMeasure;
+        getDeltas: () => Array<Data.ItemDataDelta>;
+        getDimensions: () => Array<Data.ItemDataDimension>;
+        requestUnderlyingData: (onCompleted: (data: any) => void, dataMembers: string) => void;
+    }
+    interface ItemMasterFilterStateChangedEventArgs {
+        itemName: string;
+        values: Array<Array<PrimitiveType>>;
+    }
+    interface ItemDrillDownStateChangedEventArgs {
+        itemName: string;
+        values: Array<PrimitiveType>;
+        action: "Down" | "Up";
+    }
+    interface ItemActionAvailabilityChangedEventArgs {
+        itemName: string;
+    }
+    interface ItemSelectionChangedEventArgs {
+        itemName: string;
+        getCurrentSelection: () => Array<Data.ItemDataAxisPointTuple>;
+    }
+}
+
+declare module DevExpress.Dashboard {
+    interface DashboardTitleToolbarOptions {
+        contentItems: Array<ViewerToolbarItem>;
+        actionItems: Array<ViewerToolbarItem>;
+        navigationItems: Array<ViewerToolbarItem>;
+    }
+    interface DashboardItemCaptionToolbarOptions {
+        actionItems: Array<ViewerToolbarItem>;
+        staticItems: Array<ViewerToolbarItem>;
+        stateItems: Array<ViewerToolbarItem>;
+        navigationItems: Array<ViewerToolbarItem>;
+    }
+    interface ViewerToolbarItem {
+        type?: "button" | "menu" | "text";
+        text?: string;
+        icon?: string;
+        name?: string;
+        checked?: boolean;
+        menu?: ViewerToolbarItemMenu;
+        tooltip?: ViewerToolbarItemTooltip | string;
+        hint?: string;
+        template?: () => JQuery;
+        click?: (element: JQuery) => void;
+    }
+    interface ViewerToolbarItemTooltip {
+        className?: string;
+        template?: (contentElement) => JQuery | string;
+    }
+    interface ViewerToolbarItemMenu {
+        type: "list" | "icons";
+        title?: string;
+        items?: Array<string>;
+        selectionMode?: 'none' | 'single' | 'multiple';
+        selectedItems?: Array<string>;
+        columnCount?: number;
+        itemClick?: (itemData: Object, itemElement: JQuery, itemIndex: number) => void;
+    }
+}
+declare module DevExpress.Dashboard {
+    class DisposableObject implements KnockoutSubscription {
+        protected _disposables: Array<KnockoutSubscription>;
+        protected disposed: boolean;
+        protected toDispose(disposable: KnockoutSubscription): void;
+        dispose(): void;
+    }
+}
+declare module DevExpress.Dashboard.Internal {
+    interface ViewerToolbarLocatedItem extends ViewerToolbarItem {
+        location: 'before' | 'center' | 'after';
+        isSeparator?: boolean;
+    }
+    interface dxToolbarItem {
+        location: string;
+        options?: dxToolbarItemOptions;
+        widget?: string;
+        template?: () => JQuery;
+        html?: string;
+        text?: string;
+    }
+    interface dxToolbarItemOptions {
+        elementAttr?: dxToolbarItemElementAttr;
+        hint?: string;
+        html?: string;
+        text?: string;
+        template?: (buttonData, contentElement: JQuery) => JQuery;
+        onClick?: (data) => void;
+        onContentReady?: (data) => void;
+    }
+    interface dxToolbarItemElementAttr {
+        class?: string;
+        id?: string;
+    }
+    class DashboardCaptionToolbarAdapter {
+        private _encodeHtml;
+        _icon_menu_element_size: number;
+        constructor(_encodeHtml: boolean);
+        createToolbarItem(item: ViewerToolbarLocatedItem, container?: JQuery): dxToolbarItem;
+        _applyText(item: any, text: string): void;
+        _createToolbarItemOptions(item: ViewerToolbarLocatedItem, container: JQuery): dxToolbarItemOptions;
+        _createPopoverOptions(element: JQuery, menu: ViewerToolbarItemMenu): ui.dxPopoverOptions;
+        _createTileViewOptions(menu: ViewerToolbarItemMenu, onItemClick: (data) => void): ui.dxTileViewOptions;
+        _createListOptions(menu: ViewerToolbarItemMenu, onItemClick: (data) => void): ui.dxListOptions;
+        _createTooltipOptions(tooltip: ViewerToolbarItemTooltip | string, target: JQuery): ui.dxTooltipOptions;
+        _fillCssClasses(item: ViewerToolbarItem): Array<string>;
+        _validate(item: ViewerToolbarItem): void;
+        _createSeparatorItem(item: ViewerToolbarLocatedItem): dxToolbarItem;
+        _toggleMenu(element: JQuery, menu: ViewerToolbarItemMenu, container: JQuery): void;
+        _getPopupContainer(element: JQuery, type: string): JQuery;
+    }
+}
+declare module DevExpress.Dashboard.Internal {
+    interface CaptionToolbar {
+        calcHeight: () => number;
+        update: (options?: DashboardItemCaptionToolbarOptions) => void;
+        onResize: () => void;
+        dispose: () => void;
+    }
+    abstract class DashboardCaptionToolbarBase implements CaptionToolbar {
+        protected _container: JQuery;
+        protected _adapter: DashboardCaptionToolbarAdapter;
+        protected _toolbar: DevExpress.ui.dxToolbar;
+        protected _toolbarDiv: JQuery;
+        protected _toolbarContainer: JQuery;
+        protected _options: DashboardItemCaptionToolbarOptions;
+        protected _className: string;
+        protected readonly _initialized: boolean;
+        protected readonly _staticItemsClass: string;
+        constructor(_container: JQuery, encodeHtml?: boolean);
+        update(options?: DashboardItemCaptionToolbarOptions): void;
+        calcHeight(): number;
+        onResize(): void;
+        dispose(): void;
+        protected _updateToolbar(): void;
+        protected _getToolbarOptions(): ui.dxToolbarOptions;
+        protected _getVisibleItems(): Array<ViewerToolbarLocatedItem>;
+        protected _appendToContainer(toolbarDiv: JQuery): JQuery;
+        protected _resizeStaticToolbarItems(toolbarDiv?: JQuery): void;
+    }
+    interface ItemCaptionToolbarViewOptions {
+        hasCaption: boolean;
+        encodeHtml: boolean;
+        needCaptionToolbarSeparator: boolean;
+        isBottomFloatingToolbarPosition: boolean;
+    }
+}
+declare module DevExpress.Dashboard.Internal {
+    interface TitleViewModel {
+        Text: string;
+        Visible: boolean;
+        ShowParametersButton: boolean;
+        ShowExportButton: boolean;
+        IncludeMasterFilterValues: boolean;
+        LayoutModel: {
+            Alignment: string;
+            ImageViewModel: ImageViewModel;
+        };
+    }
+    interface ImageViewModel {
+        SourceBase64String: string;
+        MimeType?: string;
+        Url: string;
+    }
+}
+declare module DevExpress.Dashboard.Internal {
+    class DashboardTitleToolbar extends DashboardCaptionToolbarBase {
+        private _optionalClass;
+        private _showStaticItemsOnCenter;
+        protected readonly _className: string;
+        protected readonly _staticItemsClass: string;
+        constructor(_container: JQuery, encodeHtml: boolean, _optionalClass?: any);
+        update(options?: DashboardItemCaptionToolbarOptions, showStaticItemsOnCenter?: boolean): void;
+        protected _getVisibleItems(): Array<ViewerToolbarLocatedItem>;
+    }
+}
+declare module DevExpress.Dashboard.Internal {
+    interface DashboardTitleOptions {
+        allowExport: boolean;
+        showExportDialog: (format) => void;
+        showParametersDialog: () => void;
+    }
+    interface IDashboardTitle {
+        onUpdated?: JQueryCallback;
+        update: () => void;
+    }
+    var titleHeight: number;
+    var titleVerticalPadding: number;
+    var contentToolbarHeight: number;
+    class DashboardTitleView {
+        onUpdated: JQueryCallback;
+        protected _captionToolbar: DashboardTitleToolbar;
+        private _options;
+        protected _titleViewModel: TitleViewModel;
+        protected readonly _visible: boolean;
+        initialize(container: JQuery, encodeHtml: boolean, options: DashboardTitleOptions, titleViewModel: TitleViewModel): void;
+        calcHeight(): number;
+        update(masterFilterValues: Array<any>, showDialogButton?: boolean): void;
+        resize(): void;
+        private _convertToToolbarOptions(options);
+        private _raiseUpdated(option);
+    }
+}
+
+declare module DevExpress.Dashboard {
+    interface ViewerApiExtensionOptions {
+        onItemClick?: (args: ItemClickEventArgs) => void;
+        onItemSelectionChanged?: (args: ItemSelectionChangedEventArgs) => void;
+        onItemWidgetCreated?: (args: ItemWidgetEventArgs) => void;
+        onItemWidgetUpdating?: (args: ItemWidgetEventArgs) => void;
+        onItemWidgetUpdated?: (args: ItemWidgetEventArgs) => void;
+        onItemElementCustomColor?: (args: ItemElementCustomColorEventArgs) => void;
+        onItemVisualInteractivity?: (args: ItemVisualInteractivityEventArgs) => void;
+        onItemMasterFilterStateChanged?: (args: ItemMasterFilterStateChangedEventArgs) => void;
+        onItemDrillDownStateChanged?: (args: ItemDrillDownStateChangedEventArgs) => void;
+        onItemActionAvailabilityChanged?: (args: ItemActionAvailabilityChangedEventArgs) => void;
+        onItemCaptionToolbarUpdated?: (args: {
+            itemName: string;
+            options: DashboardItemCaptionToolbarOptions;
+        }) => void;
+        onDashboardTitleToolbarUpdated?: (args: {
+            options: DashboardTitleToolbarOptions;
+        }) => void;
+    }
+
+    class ViewerApiExtension extends DisposableObject implements IExtension {
+        private dashboardControl;
+        static _getValidDataQueryParamsValues(columnValues: Array<any>, dataDashboardItem: any): any;
+        name: string;
+        _viewerItems: {
+            [itemName: string]: DevExpress.dashboard.viewerItems.baseItem;
+        };
+        _defaultOptions: ViewerApiExtensionOptions;
+        private _dashboardDisposables;
+        _options: ViewerApiExtensionOptions;
+        title: KnockoutObservable<Internal.IDashboardTitle>;
+        constructor(dashboardControl: any, customOptions?: ViewerApiExtensionOptions);
+        private _checkIsRangeFilterItem(itemName);
+        private _viewerItemCreated;
+        private _viewerItemDispose;
+        private _beforeApplyOptions;
+        _raiseItemActionAvailabilityChanged: (itemName: any) => void;
+        _raiseItemClick: (itemName: any, dataPoint: any) => void;
+        _raiseItemSelectionChanged: (itemName: any, tuples: any) => void;
+        _raiseItemWidgetCreated: (name: any, viewControl: any) => void;
+        _raiseItemWidgetUpdating: (name: any, viewControl: any) => void;
+        _raiseItemWidgetUpdated: (name: any, viewControl: any) => void;
+        _raiseItemCaptionToolbarUpdated: (name: string, options: DashboardItemCaptionToolbarOptions) => void;
+        _raiseTitleToolbarUpdated: (options: DashboardTitleToolbarOptions) => void;
+        _raiseItemElementCustomColor: (itemName: any, eventArgs: any) => void;
+        _raiseItemVisualInteractivity: (itemName: any, interactivityOptions: any) => void;
+        _raiseClearMasterFilter: (itemName: any) => void;
+        start(): void;
+        stop(): void;
+        private _getDataItem(itemName);
+        requestUnderlyingData: (itemName: string, args: Data.RequestUnderlyingDataParameters, onCompleted: (result: Data.ItemUnderlyingData) => void) => void;
+        getCurrentRange(itemName: string): Data.RangeFilterSelection;
+        getEntireRange(itemName: string): Data.RangeFilterSelection;
+        setRange(itemName: string, range: Data.RangeFilterSelection): void;
+        setPredefinedRange(itemName: string, dateTimePeriodName: string): void;
+        getAvailablePredefinedRanges(itemName: string): Array<string>;
+        getCurrentPredefinedRange(itemName: string): string;
+        getCurrentSelection(itemName: string): Array<Data.ItemDataAxisPointTuple>;
+        canSetMasterFilter(itemName: string): boolean;
+        canClearMasterFilter(itemName: string): boolean;
+        canPerformDrillDown(itemName: string): boolean;
+        canPerformDrillUp(itemName: string): boolean;
+        getItemData(itemName: string): Data.ItemData;
+        getCurrentFilterValues(itemName: string): Array<Data.ItemDataAxisPointTuple>;
+        getAvailableFilterValues(itemName: string): Array<Data.ItemDataAxisPointTuple>;
+        getCurrentDrillDownValues(itemName: string): Data.ItemDataAxisPointTuple;
+        getAvailableDrillDownValues(itemName: string): Array<Data.ItemDataAxisPointTuple>;
+        setMasterFilter(itemName: string, values: any): void;
+        clearMasterFilter(itemName: string): void;
+        performDrillDown(itemName: string, value: PrimitiveType | Data.ItemDataAxisPointTuple): void;
+        performDrillUp(itemName: string): void;
+        getAvailableActions(itemName: string): Array<string>;
+        updateItemCaptionToolbar(itemName?: string): void;
+        updateDashboardTitleToolbar(): void;
+    }
+}
+
+declare module DevExpress.Dashboard {
+    class MobileLayoutExtension implements IExtension {
+        private dashboardControl;
+        private options;
+        name: string;
+        _disposables: KnockoutSubscription[];
+        constructor(dashboardControl: any, options?: MobileLayoutExtensionOptions);
+        _expectedMobileLayoutMode(): boolean;
+        _canMobileLayoutBeEnabled: KnockoutComputed<boolean>;
+        mobileLayoutEnabled: KnockoutComputed<boolean>;
+        start(): void;
+        _dashboardList: any[];
+        stop(): void;
+        private _originalHandlers;
+    }
+    type MobileLayoutMode = "Always" | "Auto" | "Never";
+    interface MobileLayoutExtensionOptions {
+        mobileLayoutEnabled?: MobileLayoutMode;
+    }
+    interface DashboardInfo {
+        id: string;
+        name: string;
+        url?: string;
+    }
+}
+
 declare module DevExpress.dashboard.viewerItems {
     abstract class baseItem {
         constructor($container: any, options: any);

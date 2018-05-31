@@ -5,10 +5,16 @@ module CustomExtensions {
         name = "custom-dashboard-panel";
 
         private _toolbarElement;
-        private _customTemplate = {
-            name: "dashboard-custom-panel-extension",
-            data: this
-        }
+        private _customTemplate;
+        private _iconBack = 'dx-dashboard-back';
+        private _dashboardsButtonName = 'Dashboards';
+        private _flexParent = 'dx-dashboard-flex-parent';
+        private _dashboardsButton = 'dx-dashboards-button';
+        private _dashboardTruncated = 'dx-dashboard-truncated';
+        private _ellipsisText = 'dx-dashboard-ellipsis';
+        private _itemTemplate = ko.observable<string>();
+        private _isMobile = ko.observable<boolean>(false);
+        private _disposables: KnockoutSubscription[] = [];
 
         panelWidth = 250;
         visible = ko.observable(false);
@@ -16,18 +22,21 @@ module CustomExtensions {
 
         designerToViewerAction: DevExpress.Dashboard.ISequenceAction;
         viewerToDesignerAction: DevExpress.Dashboard.ISequenceAction;
-        left: KnockoutComputed<number>;
         selectedItemKeys = ko.observableArray<string>();
-        availableDashboards = ko.observableArray<DevExpress.Dashboard.IDashboardInfo>();
+        availableDashboards = ko.observableArray<DevExpress.Dashboard.DashboardInfo>();
 
+        private _actualPanelWidth = ko.observable<number>(this.panelWidth);
 
-        constructor(private _dashboardControl: any) {
+        private _left = ko.computed(() => {
+            return this.visible() ? 0 : -this._actualPanelWidth();
+        });
+
+        constructor(private _dashboardControl: any, private options: DashboardPanelExtensionOptions = {}) {
             this._toolbarElement = new DevExpress.Dashboard.DashboardToolbarGroup("viewer-button", "", 100);
             var toViewerItem = new DevExpress.Dashboard.DashboardToolbarItem("toviewer", () => this.switchToViewer());
             toViewerItem.template = "dashboard-custom-panel-extension-viewer-button";
             toViewerItem.disabled = ko.pureComputed(() => !!this._dashboardControl.dashboard());
 
-            this.allowSwitchToDesigner(_dashboardControl.allowSwitchToDesigner);
 
             this._toolbarElement.items.push(toViewerItem);
 
@@ -40,8 +49,6 @@ module CustomExtensions {
                 action: this.hidePanelAsync
             }
 
-            this.visible(!this._dashboardControl.isDesignMode());
-
             this.selectedItemKeys.subscribe(value => {
                 if(value.length) {
                     var newDashboardId = value[0];
@@ -53,6 +60,29 @@ module CustomExtensions {
         }
 
         start() {
+            var mobileExtension = <DevExpress.Dashboard.MobileLayoutExtension>this._dashboardControl.findExtension("mobile-layout");
+            this._isMobile(mobileExtension && mobileExtension.mobileLayoutEnabled());
+
+            mobileExtension.mobileLayoutEnabled.subscribe(() => {
+                this.stop();
+                this.start();
+            })
+
+            if(this._isMobile())
+                this.allowSwitchToDesigner(false);
+            else if(this.allowSwitchToDesigner() === undefined) {
+                this.allowSwitchToDesigner(this._dashboardControl.allowSwitchToDesigner);
+            }
+            this.visible(this._isMobile() ? false : !this._dashboardControl.isDesignMode());
+            this._itemTemplate(this._getTemplateName());
+            if(this._isMobile()) {
+                this._actualPanelWidth($(window).width());
+                DevExpress.devices.on('orientationChanged', (e) => {
+                    this._actualPanelWidth($(window).width());
+                });
+            }
+
+            this._customTemplate = this._getCustomTemplate();
             this._dashboardControl.customTemplates.push(this._customTemplate);
 
             var extension = <DevExpress.Dashboard.ToolboxExtension>this._dashboardControl.findExtension("toolbox");
@@ -60,23 +90,44 @@ module CustomExtensions {
                 extension.toolbarGroups.push(this._toolbarElement);
             }
 
-            this._dashboardControl.dashboardContainer.subscribe(dashboardContainer => {
+            this._disposables.push(this._dashboardControl.dashboardContainer.subscribe(dashboardContainer => {
                 if(dashboardContainer) {
                     this._validateSelection(dashboardContainer, this.availableDashboards())
                 }
-            });
-            this.availableDashboards.subscribe(avaliableDashboards =>
-                this._validateSelection(this._dashboardControl.dashboardContainer(), avaliableDashboards));
+            }));
+            this._disposables.push(this.availableDashboards.subscribe(avaliableDashboards =>
+                this._validateSelection(this._dashboardControl.dashboardContainer(), avaliableDashboards)));
+
+            if(this._isMobile()) {
+                var api = <DevExpress.Dashboard.ViewerApiExtension>this._dashboardControl.findExtension("viewer-api");
+                let originalTitleUpdatedHangler = api._options.onDashboardTitleToolbarUpdated;
+                api._options.onDashboardTitleToolbarUpdated = (args) => {
+                    args.options.navigationItems.push({
+                        type: 'button',
+                        template: () => {
+                            return $('<div/>')
+                                .addClass([this._flexParent, this._ellipsisText].join(' '))
+                                .append($('<svg><use xlink:href="#' + this._iconBack + '" /></svg>'))
+                                .append($('<div/>').text(this._dashboardsButtonName).addClass([this._dashboardsButton, this._dashboardTruncated].join(' ')));
+                        },
+                        click: () => {
+                            this.showPanelAsync({ surfaceLeft: this._actualPanelWidth() });
+                        }
+                    });
+                    originalTitleUpdatedHangler.call(this, args);
+                };
+            }
 
             if(!this._dashboardControl.isDesignMode()) {
-                this._dashboardControl.surfaceLeft(this.panelWidth);
+                this._dashboardControl.surfaceLeft(this._isMobile() ? 0 : this.panelWidth);
             }
-            this.left = ko.computed(() => this.visible() ? 0 : -this.panelWidth);
 
             this.updateDashboardsList();
         }
 
         stop() {
+            this._disposables.forEach(d => d.dispose());
+            this._disposables = [];
             var extension = <DevExpress.Dashboard.ToolboxExtension>this._dashboardControl.findExtension("toolbox");
             if(extension) {
                 extension.toolbarGroups.remove(this._toolbarElement);
@@ -86,11 +137,15 @@ module CustomExtensions {
 
         updateDashboardsList() {
             var dashboardContainer = this._dashboardControl.dashboardContainer();
-            this._dashboardControl.requestDashboardList().done((availableDashboards: Array<DevExpress.Dashboard.IDashboardInfo>) => {
-                this.availableDashboards(availableDashboards);
+            let options = this.options;
+            this._dashboardControl.requestDashboardList().done((availableDashboards: Array<DevExpress.Dashboard.DashboardInfo>) => {
+                this.availableDashboards(availableDashboards.map(dashboard => new PanelExtensionDashboardInfo(
+                    dashboard.id,
+                    dashboard.name,
+                    options.dashboardThumbnail ? (<any>DevExpress.utils).string.format(options.dashboardThumbnail, dashboard.id) : undefined)));
             });
         }
-        private _validateSelection(dashboardContainer: DevExpress.Dashboard.IDashboardContainer, avaliableDashboards: DevExpress.Dashboard.IDashboardInfo[]) {
+        private _validateSelection(dashboardContainer: DevExpress.Dashboard.IDashboardContainer, avaliableDashboards: DevExpress.Dashboard.DashboardInfo[]) {
             if(dashboardContainer) {
                 var dashboardInfo = avaliableDashboards.filter(info => info.id === dashboardContainer.id)[0];
                 if(dashboardInfo) {
@@ -98,7 +153,17 @@ module CustomExtensions {
                 }
             }
         }
-
+        private _getTemplateName() {
+            if(this._isMobile()) {
+                return this.options.dashboardThumbnail ? 'dashboard-preview' : 'dashboard-card-view';
+            }
+            return 'dashboard-list-item';
+        }
+        private _hidePanel() {
+            if(this._isMobile()) {
+                this.hidePanelAsync({ surfaceLeft: 0 });
+            }
+        }
         showPanelAsync = (options: DevExpress.Dashboard.IWorkingModeSwitchingOptions) => {
             var def = $.Deferred();
             this.visible(true);
@@ -123,6 +188,40 @@ module CustomExtensions {
         }
         switchToDesigner = (): void => {
             this._dashboardControl.switchToDesigner();
+        }
+        private _getCustomTemplate() {
+            return {
+                name: "dx-dashboard-working-mode-extension",
+                data: {
+                    panelWidth: this._actualPanelWidth,
+                    allowSwitchToDesigner: this.allowSwitchToDesigner,
+                    left: this._left,
+                    selectedItemKeys: this.selectedItemKeys,
+                    availableDashboards: this.availableDashboards,
+                    itemTemplate: this._itemTemplate,
+                    isMobile: this._isMobile,
+                    hidePanel: () => { this._hidePanel(); },
+                    switchToDesigner: this.switchToDesigner,
+                    switchToViewer: this.switchToViewer
+                }
+            };
+        }
+    }
+
+    export interface DashboardPanelExtensionOptions {
+        dashboardThumbnail?: string;
+    }
+
+    class PanelExtensionDashboardInfo implements DevExpress.Dashboard.DashboardInfo {
+        hidden = ko.observable<boolean>(false);
+
+        constructor(public id: string,
+            public name: string,
+            public imageUrl?: string) {
+        }
+
+        hide() {
+            this.hidden(true);
         }
     }
 }
