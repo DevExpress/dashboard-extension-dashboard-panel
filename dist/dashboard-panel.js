@@ -171,7 +171,7 @@ var CustomExtensions;
         CustomDashboardPanelExtension.prototype._getCustomTemplate = function () {
             var _this = this;
             return {
-                name: "dx-dashboard-working-mode-extension",
+                name: "dashboard-custom-panel-extension",
                 data: {
                     panelWidth: this._actualPanelWidth,
                     allowSwitchToDesigner: this.allowSwitchToDesigner,
