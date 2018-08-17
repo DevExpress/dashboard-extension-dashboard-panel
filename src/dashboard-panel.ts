@@ -191,7 +191,7 @@ module CustomExtensions {
         }
         private _getCustomTemplate() {
             return {
-                name: "dx-dashboard-working-mode-extension",
+                name: "dashboard-custom-panel-extension",
                 data: {
                     panelWidth: this._actualPanelWidth,
                     allowSwitchToDesigner: this.allowSwitchToDesigner,
