@@ -48,15 +48,6 @@ module CustomExtensions {
                 orderNo: 20,
                 action: this.hidePanelAsync
             }
-
-            this.selectedItemKeys.subscribe(value => {
-                if(value.length) {
-                    var newDashboardId = value[0];
-                    if(!this._dashboardControl.dashboardContainer() || this._dashboardControl.dashboardContainer().id !== newDashboardId) {
-                        this._dashboardControl.loadDashboard(newDashboardId);
-                    }
-                }
-            });
         }
 
         start() {
@@ -95,8 +86,6 @@ module CustomExtensions {
                     this._validateSelection(dashboardContainer, this.availableDashboards())
                 }
             }));
-            this._disposables.push(this.availableDashboards.subscribe(avaliableDashboards =>
-                this._validateSelection(this._dashboardControl.dashboardContainer(), avaliableDashboards)));
 
             if(this._isMobile()) {
                 var api = <DevExpress.Dashboard.ViewerApiExtension>this._dashboardControl.findExtension("viewer-api");
@@ -143,6 +132,7 @@ module CustomExtensions {
                     dashboard.id,
                     dashboard.name,
                     options.dashboardThumbnail ? (<any>DevExpress.utils).string.format(options.dashboardThumbnail, dashboard.id) : undefined)));
+                this._validateSelection(this._dashboardControl.dashboardContainer(), this.availableDashboards())
             });
         }
         private _validateSelection(dashboardContainer: DevExpress.Dashboard.IDashboardContainer, avaliableDashboards: DevExpress.Dashboard.DashboardInfo[]) {
@@ -202,7 +192,19 @@ module CustomExtensions {
                     isMobile: this._isMobile,
                     hidePanel: () => { this._hidePanel(); },
                     switchToDesigner: this.switchToDesigner,
-                    switchToViewer: this.switchToViewer
+                    switchToViewer: this.switchToViewer,
+                    onOptionChanged: (e) => {
+                        if(e.name === 'selectedItemKeys' && this.selectedItemKeys().length > 0) {
+                            let selectedItem = this.availableDashboards().filter(item => item.id === this.selectedItemKeys()[0])[0];
+                            e.component.scrollToItem(this.availableDashboards().indexOf(selectedItem));
+                        }
+                    },
+                    onSelectionChanged: (e) => {
+                        var newDashboardId = e.addedItems[0].id;
+                        if(!this._dashboardControl.dashboardContainer() || this._dashboardControl.dashboardContainer().id !== newDashboardId) {
+                            this._dashboardControl.loadDashboard(newDashboardId);
+                        }
+                    }
                 }
             };
         }

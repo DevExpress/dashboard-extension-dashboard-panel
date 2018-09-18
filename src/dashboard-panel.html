@@ -26,10 +26,8 @@
                             searchEditorOptions: {
                                 placeholder: DevExpress.Designer.getLocalization('DashboardWebStringId.Search')
                             },
-                            onContentReady: function (e) {
-                                if(e.component.option('selectedItems').length !== 0)
-                                    e.component.scrollToItem(e.component.option('selectedItems')[0]);
-                            }
+                            onOptionChanged: onOptionChanged,
+                            onSelectionChanged: onSelectionChanged
                         }, 
                         style: { bottom: allowSwitchToDesigner() ? '' : 0 }">
             <div data-options="dxTemplate:{ name: 'dashboard-card-view' }">
