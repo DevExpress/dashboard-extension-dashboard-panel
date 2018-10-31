@@ -160,31 +160,46 @@ var CustomExtensions;
         };
         CustomDashboardPanelExtension.prototype._getCustomTemplate = function () {
             var _this = this;
+            var listOptions = {
+                noDataText: '',
+                keyExpr: 'id',
+                selectionMode: 'single',
+                itemTemplate: this._itemTemplate,
+                activeStateEnabled: false,
+                selectedItemKeys: this.selectedItemKeys,
+                onItemClick: function () { _this._hidePanel(); },
+                searchEnabled: this._isMobile,
+                searchExpr: 'id',
+                hoverStateEnabled: !this._isMobile,
+                focusStateEnabled: !this._isMobile,
+                searchEditorOptions: {
+                    placeholder: DevExpress.Designer.getLocalization('DashboardWebStringId.Search')
+                },
+                onOptionChanged: function (e) {
+                    if (e.name === 'selectedItemKeys' && _this.selectedItemKeys().length > 0) {
+                        var selectedItem = _this.availableDashboards().filter(function (item) { return item.id === _this.selectedItemKeys()[0]; })[0];
+                        e.component.scrollToItem(_this.availableDashboards().indexOf(selectedItem));
+                    }
+                },
+                onSelectionChanged: function (e) {
+                    var newDashboardId = e.addedItems[0].id;
+                    if (!_this._dashboardControl.dashboardContainer() || _this._dashboardControl.dashboardContainer().id !== newDashboardId) {
+                        _this._dashboardControl.loadDashboard(newDashboardId);
+                    }
+                }
+            };
+            $.extend(listOptions, this._isMobile() ? { dataSource: this.availableDashboards } : { items: this.availableDashboards });
             return {
                 name: "dashboard-custom-panel-extension",
                 data: {
                     panelWidth: this._actualPanelWidth,
                     allowSwitchToDesigner: this.allowSwitchToDesigner,
                     left: this._left,
-                    selectedItemKeys: this.selectedItemKeys,
-                    availableDashboards: this.availableDashboards,
-                    itemTemplate: this._itemTemplate,
                     isMobile: this._isMobile,
                     hidePanel: function () { _this._hidePanel(); },
                     switchToDesigner: this.switchToDesigner,
                     switchToViewer: this.switchToViewer,
-                    onOptionChanged: function (e) {
-                        if (e.name === 'selectedItemKeys' && _this.selectedItemKeys().length > 0) {
-                            var selectedItem = _this.availableDashboards().filter(function (item) { return item.id === _this.selectedItemKeys()[0]; })[0];
-                            e.component.scrollToItem(_this.availableDashboards().indexOf(selectedItem));
-                        }
-                    },
-                    onSelectionChanged: function (e) {
-                        var newDashboardId = e.addedItems[0].id;
-                        if (!_this._dashboardControl.dashboardContainer() || _this._dashboardControl.dashboardContainer().id !== newDashboardId) {
-                            _this._dashboardControl.loadDashboard(newDashboardId);
-                        }
-                    }
+                    listOptions: listOptions
                 }
             };
         };
