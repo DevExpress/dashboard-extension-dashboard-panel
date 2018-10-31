@@ -10,25 +10,7 @@
         </div>
         <div 
              class="dx-dashboard-dashboard-list dx-dashboard-typography" 
-             data-bind="dxList: { 
-                            noDataText: '',
-                            dataSource: availableDashboards,
-                            keyExpr: 'id',
-                            selectionMode: 'single',
-                            itemTemplate: itemTemplate,
-                            activeStateEnabled: false,
-                            selectedItemKeys: selectedItemKeys,
-                            onItemClick: hidePanel,
-                            searchEnabled: isMobile,
-                            searchExpr: 'id',
-                            hoverStateEnabled: !isMobile,
-                            focusStateEnabled: !isMobile,
-                            searchEditorOptions: {
-                                placeholder: DevExpress.Designer.getLocalization('DashboardWebStringId.Search')
-                            },
-                            onOptionChanged: onOptionChanged,
-                            onSelectionChanged: onSelectionChanged
-                        }, 
+             data-bind="dxList: listOptions, 
                         style: { bottom: allowSwitchToDesigner() ? '' : 0 }">
             <div data-options="dxTemplate:{ name: 'dashboard-card-view' }">
                 <div class="dx-dashboard-card-view">
