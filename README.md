@@ -1,3 +1,9 @@
+⛔ DEPRECATED. This project was moved to a new repository. Visit [dashboard-extensions](https://github.com/DevExpress/dashboard-extensions) to find an updated version. 
+
+The current repository does not support the [modular approach](https://docs.devexpress.com/Dashboard/119108/) for HTML JS Dashboard and will not be updated in the future.
+
+------
+
 The **Dashboard Panel** is a [Web Dashboard extension](https://documentation.devexpress.com/#Dashboard/CustomDocument117232) that displays a list of available dashboards and lets you switch between the designer and viewer modes. 
 
 ![web-panel](https://user-images.githubusercontent.com/17986517/27797519-a6e7835c-6016-11e7-8abe-2331c9af6ccf.png)
